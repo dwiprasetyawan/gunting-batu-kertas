@@ -1,52 +1,69 @@
+//get computer choice
 function getComputerChoice (){
-    let ComputerChoice = Math.floor(Math.random() * 3)
-
-    switch (ComputerChoice){
-        case 0 :
-            return 'Gunting';
-            break;
-        case 1 :
-            return 'Batu';
-            break;
-        case 2 :
-            return 'Kertas';
-            break;
-    }
+    const computerChoice = ['gunting','batu','kertas'];
+    const random = Math.floor(Math.random() * computerChoice.length)
+    return computerChoice[random];
 }
-
-function playRound (playerSelection, computerSelection){
-    let player = playerSelection.toLowerCase();
-    let computer = computerSelection.toLowerCase();
-
-    if (player == computer) {
-        return 'Seri';
-    }
-
-    if (
-        (player == 'batu' && computer == 'gunting') ||
-        (player == 'gunting' && computer == 'kertas') ||
-        (player == 'kertas' && computer == 'batu'))
-        {
-            return "Anda Menang " + player + " mengalahkan " + computer;
-        }
-    if (
-        (player == 'batu' && computer == 'kertas') ||
-        (player == 'gunting' && computer == 'batu') ||
-        (player == 'kertas' && computer == 'gunting'))
-        {
-            return "Anda Kalah. " + computer + " mengalahkan " + player;
-        }
+//get player choice
+function getPlayerChoice (){
+    const playerChoice = prompt("Batu, Gunting, Kertas")
+    return playerChoice;
 }
 
 function game () {
-    for (let i = 0; i < 5; i++) {
-
-        const playerSelection = getComputerChoice();
+    let roundsPlayed = 1;
+    let playerScore = 0
+    let computerScore = 0
+    let winResult = ""
+    for (let i = 0; i < 3; i++) {
+        const playerSelection = getPlayerChoice();
         const computerSelection = getComputerChoice();
-        console.log(playerSelection);
-        console.log(computerSelection);
+
+        //output
+        console.log("Ronde ke " + roundsPlayed)
+        console.log("Player : " + playerSelection + " X Computer : " + computerSelection)
         console.log(playRound(playerSelection, computerSelection))
+        console.log("Skor Sementara")
+        console.log("Player : " + playerScore + " || Computer : " + computerScore)
+        console.log("")
+
+        function playRound (playerSelection, computerSelection){
+            let player = playerSelection.toLowerCase();
+            let computer = computerSelection.toLowerCase();
+            if (player == computer) {
+                return 'Seri';
+            }
+            if (
+                (player == 'batu' && computer == 'gunting') ||
+                (player == 'gunting' && computer == 'kertas') ||
+                (player == 'kertas' && computer == 'batu'))
+                {
+                    playerScore++
+                    return "Anda Menang " + player + " mengalahkan " + computer;
+                }
+            if (
+                (player == 'batu' && computer == 'kertas') ||
+                (player == 'gunting' && computer == 'batu') ||
+                (player == 'kertas' && computer == 'gunting'))
+                {
+                    computerScore++
+
+                    return "Anda Kalah. " + computer + " mengalahkan " + player;
+                }
+        }
+        roundsPlayed++
      }
+
+     if (playerScore > computerScore){
+        winResult = 'Selamat. Anda Menang'
+     } else if ( playerScore < computerScore){
+        winResult = 'Computer Menang'
+    } else if ( playerScore == computerScore){
+        winResult = 'Hasil Akhir Seri'
+     }
+
+     console.log(winResult)
 }
 
-console.log(game())
+game();
+
